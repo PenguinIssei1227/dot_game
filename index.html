@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dot. (Duel of Tactics) - ゲームマーケット特設ページ</title>
+    <style>
+        /* --- 基本設定 & カラーパレット --- */
+        :root {
+            --bg-color: #0b0b0b;       /* 漆黒 */
+            --primary-red: #b8001c;    /* ロゴの深い赤 */
+            --accent-gray: #1a1a1a;    /* コンテンツ背景用 */
+            --text-light: #ffffff;
+            --text-muted: #b0b0b0;
+            --font-pixel: 'Courier New', Courier, monospace; /* ドット感を出すフォント */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+            scroll-behavior: smooth; /* スムーズスクロール */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* --- ナビゲーション & ハンバーガーメニュー --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(11, 11, 11, 0.95);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .nav-logo {
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            text-decoration: none;
+            font-family: var(--font-pixel);
+        }
+
+        .nav-logo img {
+            height: 34px;
+            width: auto;
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        /* デスクトップ用メニュー（初期状態は非表示、スマホ優先） */
+        .nav-links {
+            display: none;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+        }
+
+        /* ハンバーガーアイコン */
+        .hamburger {
+            display: block;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 110;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-light);
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* モバイル用ドロワーメニュー */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            height: 100vh;
+            background-color: rgba(11, 11, 11, 0.98);
+            border-left: 2px solid var(--primary-red);
+            padding-top: 80px;
+            transition: 0.3s;
+            z-index: 105;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .mobile-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        /* ハンバーガーアニメーション用 */
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* --- ヒーローセクション（ファーストビュー） --- */
+        .hero {
+            padding: 120px 20px 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero img {
+            max-width: 260px;
+            width: 100%;
+            image-rendering: pixelated;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 1.4rem;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .hero .intro-text {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        /* CTAボタン */
+        .btn-cta {
+            display: inline-block;
+            background-color: var(--primary-red);
+            color: #fff;
+            padding: 15px 40px;
+            font-weight: bold;
+            text-decoration: none;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #fff;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-cta:active {
+            box-shadow: 0px 0px 0px #fff;
+            transform: translate(4px, 4px);
+        }
+
+        /* --- 各コンテンツ共通スタイル --- */
+        section {
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-family: var(--font-pixel);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 4px;
+            background-color: var(--primary-red);
+            margin: 10px auto 0;
+        }
+
+        /* --- シンプルなルール概要 --- */
+        .info-badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            background: var(--accent-gray);
+            border: 1px solid #333;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .rule-step {
+            background-color: var(--accent-gray);
+            border-left: 4px solid var(--primary-red);
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .rule-step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary-red);
+        }
+
+        .rule-step p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* --- 取置き予約フォーム --- */
+        .reserve-box {
+            background-color: var(--accent-gray);
+            border: 2px solid var(--primary-red);
+            padding: 30px 20px;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: #0b0b0b;
+            border: 1px solid #444;
+            color: #fff;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #8a0014;
+        }
+
+        /* --- フッター --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.8rem;
+            color: #555;
+            border-top: 1px solid #222;
+        }
+
+        /* --- メディアクエリ（PC向け調整） --- */
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+            .hamburger { display: none; }
+            .mobile-menu { display: none; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ナビゲーションバー -->
+    <nav>
+        <a href="#" class="nav-logo"><img src="logo_shadow.png" alt="Dot."></a>
+        <!-- PC用通常メニュー -->
+        <ul class="nav-links">
+            <li><a href="#about">概要</a></li>
+            <li><a href="#rules">ルール</a></li>
+            <li><a href="#reserve">ゲームマーケット予約</a></li>
+        </ul>
+        <!-- スマホ用ハンバーガーボタン -->
+        <button class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- スマホ用ドロワーメニュー -->
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="#about" class="menu-link">概要</a></li>
+            <li><a href="#rules" class="menu-link">ルール</a></li>
+            <li><a href="#reserve" class="menu-link">ゲームマーケット予約</a></li>
+        </ul>
+    </div>
+
+    <!-- ヒーローセクション -->
+    <header class="hero" id="about">
+        <img src="Dot_logo.png" alt="Dot.">
+        <h1>革命前夜の究極の心理戦カードゲーム</h1>
+        <p class="intro-text">
+            『Dot.』は、限られた道具を駆使して相手の正体を探り合う、2〜4人用の本格心理戦ゲームです。確率の推測と大胆なブラフで、相手の裏をかけ！
+        </p>
+        <a href="#reserve" class="btn-cta">ゲムマ会場で取り置き予約</a>
+    </header>
+
+    <!-- ルール概要セクション -->
+    <section id="rules">
+        <h2>Quick Rules</h2>
+        <div class="info-badge-container">
+            <div class="info-badge">⏱ 30-90分</div>
+            <div class="info-badge">👥 2-4人用</div>
+            <div class="info-badge">🏆 4pt先取で勝利</div>
+        </div>
+
+        <div class="rule-step">
+            <h3>1. 昼のフェーズ：道具で探る</h3>
+            <p>手札から「道具カード」を1枚出し、効果を発動します。他のプレイヤーの役職や動向をジワジワと炙り出します。</p>
+        </div>
+
+        <div class="rule-step">
+            <h3>2. 夜のフェーズ：命懸けの決断</h3>
+            <p>1対1で仕掛ける「決闘」、または全員で一斉に刃を交える「乱闘」を選択。カードの戦力と役職の力で勝敗を決します。</p>
+        </div>
+
+        <div class="rule-step">
+            <h3>3. 勝者の確定</h3>
+            <p>心理戦を制し、夜のフェーズで勝利した者がポイントを獲得。先に4ポイントに達したスレイヤーが勝者となります。</p>
+        </div>
+    </section>
+
+    <!-- 予約セクション -->
+    <section id="reserve">
+        <h2>Booth Reservation</h2>
+        <div class="reserve-box">
+            <!-- ※実際の運用時はGoogleフォーム等のリンクに変えるか、Formspree等のバックエンドをご利用ください -->
+            <form action="#" method="POST" onsubmit="alert('予約機能のデモです。実際の送信先を設定してください。'); return false;">
+                <div class="form-group">
+                    <label for="name">お名前（ニックネーム可）</label>
+                    <input type="text" id="name" name="name" placeholder="例：ゲムマ太郎" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">予約個数</label>
+                    <select id="quantity" name="quantity">
+                        <option value="1">1個</option>
+                        <option value="2">2個</option>
+                        <option value="3">3個</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">予約を確定する</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2026 Duel of Tactics (Dot.) All Rights Reserved.</p>
+    </footer>
+
+    <!-- ハンバーガーメニュー制御用のJavaScript -->
+    <script>
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        // メニューの開閉を切り替える関数
+        function toggleMenu() {
+            hamburgerBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        }
+
+        // ハンバーガーボタンクリック時
+        hamburgerBtn.addEventListener('click', toggleMenu);
+
+        // メニュー内のリンクをクリックしたらメニューを閉じる
+        menuLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+    </script>
+</body>
+</html>
