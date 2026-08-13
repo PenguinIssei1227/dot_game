@@ -307,6 +307,23 @@
             border-top: 1px solid #222;
         }
 
+        .footer-social {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: var(--primary-red);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-social a:hover {
+            opacity: 0.8;
+        }
+
         /* --- メディアクエリ（PC向け調整） --- */
         @media (min-width: 768px) {
             .nav-links { display: flex; }
@@ -383,26 +400,35 @@
     <section id="reserve">
         <h2>Booth Reservation</h2>
         <div class="reserve-box">
-            <!-- ※実際の運用時はGoogleフォーム等のリンクに変えるか、Formspree等のバックエンドをご利用ください -->
-            <form action="#" method="POST" onsubmit="alert('予約機能のデモです。実際の送信先を設定してください。'); return false;">
+            <!-- Googleフォームへ裏側で送信（画面遷移なし）。回答は元のGoogleフォームの「回答」タブ、
+                 またはメール通知設定（回答タブ→⋮→メール通知を受け取る）で確認できます -->
+            <form id="reserve-form"
+                  action="https://docs.google.com/forms/u/0/d/e/1FAIpQLScntSssvfGNXY7KfsPYZDLgUIyxgceZygNkuPnDDGjBaERqbw/formResponse"
+                  method="POST" target="hidden_iframe">
                 <div class="form-group">
                     <label for="name">お名前（ニックネーム可）</label>
-                    <input type="text" id="name" name="name" placeholder="例：ゲムマ太郎" required>
+                    <input type="text" id="name" name="entry.1884265043" placeholder="例：ゲムマ太郎" required>
                 </div>
                 <div class="form-group">
                     <label for="email">メールアドレス</label>
-                    <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                    <input type="email" id="email" name="entry.1212348438" placeholder="example@email.com" required>
                 </div>
                 <div class="form-group">
                     <label for="quantity">予約個数</label>
-                    <select id="quantity" name="quantity">
+                    <select id="quantity" name="entry.357941336" required>
                         <option value="1">1個</option>
                         <option value="2">2個</option>
                         <option value="3">3個</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-submit">予約を確定する</button>
+                <div class="form-group">
+                    <label for="question">ご質問（任意）</label>
+                    <input type="text" id="question" name="entry.513669972" placeholder="質問があればご記入ください">
+                </div>
+                <button type="submit" class="btn-submit" id="reserve-submit-btn">予約を確定する</button>
+                <p id="reserve-status" style="margin-top:15px; text-align:center; font-size:0.9rem; display:none;"></p>
             </form>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
     </section>
 
@@ -433,6 +459,34 @@
         // メニュー内のリンクをクリックしたらメニューを閉じる
         menuLinks.forEach(link => {
             link.addEventListener('click', toggleMenu);
+        });
+
+        // --- 予約フォーム送信処理（裏側でGoogleフォームに送信） ---
+        const reserveForm = document.getElementById('reserve-form');
+        const reserveBtn = document.getElementById('reserve-submit-btn');
+        const reserveStatus = document.getElementById('reserve-status');
+        const hiddenIframe = document.getElementById('hidden_iframe');
+        let formSubmitted = false;
+
+        reserveForm.addEventListener('submit', function () {
+            reserveBtn.disabled = true;
+            reserveBtn.textContent = '送信中...';
+            reserveStatus.style.display = 'none';
+            formSubmitted = true;
+            // フォーム自体は通常どおりhidden_iframeへPOSTされる（画面遷移なし）
+        });
+
+        // 非表示iframeの読み込み完了 = Googleフォームへの送信完了とみなす
+        hiddenIframe.addEventListener('load', function () {
+            if (!formSubmitted) return; // 初回の空読み込みは無視
+
+            reserveStatus.style.display = 'block';
+            reserveStatus.style.color = '#7CFC7C';
+            reserveStatus.textContent = 'ご予約ありがとうございます！確認のご連絡をお待ちください。';
+            reserveForm.reset();
+            reserveBtn.disabled = false;
+            reserveBtn.textContent = '予約を確定する';
+            formSubmitted = false;
         });
     </script>
 </body>
