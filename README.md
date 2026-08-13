@@ -1,1 +1,1 @@
-# dot_game
+# dot_szkcard
