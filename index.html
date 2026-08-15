@@ -427,6 +427,12 @@
                 </div>
                 <button type="submit" class="btn-submit" id="reserve-submit-btn">予約を確定する</button>
                 <p id="reserve-status" style="margin-top:15px; text-align:center; font-size:0.9rem; display:none;"></p>
+                <!-- Googleフォームが要求する内部トークン。JSで自動生成して付与します -->
+                <input type="hidden" name="fvv" value="1">
+                <input type="hidden" name="pageHistory" value="0">
+                <input type="hidden" name="fbzx" id="fbzx-field" value="">
+                <input type="hidden" name="partialResponse" id="partial-response-field" value="">
+                <input type="hidden" name="submissionTimestamp" value="-1">
             </form>
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
@@ -466,7 +472,22 @@
         const reserveBtn = document.getElementById('reserve-submit-btn');
         const reserveStatus = document.getElementById('reserve-status');
         const hiddenIframe = document.getElementById('hidden_iframe');
+        const fbzxField = document.getElementById('fbzx-field');
+        const partialResponseField = document.getElementById('partial-response-field');
         let formSubmitted = false;
+
+        // Googleフォームが要求する擬似トークンをページ読み込み時に生成
+        function generateFbzx() {
+            // 実際のGoogleフォームのfbzxと同じ桁数(19桁前後)の数値文字列を生成
+            let token = '';
+            for (let i = 0; i < 19; i++) {
+                token += Math.floor(Math.random() * 10);
+            }
+            return token;
+        }
+        const fbzxValue = generateFbzx();
+        fbzxField.value = fbzxValue;
+        partialResponseField.value = '[null,null,"' + fbzxValue + '"]';
 
         reserveForm.addEventListener('submit', function () {
             reserveBtn.disabled = true;
@@ -482,7 +503,7 @@
 
             reserveStatus.style.display = 'block';
             reserveStatus.style.color = '#7CFC7C';
-            reserveStatus.textContent = 'ご予約ありがとうございます！確認のメールをご確認ください。';
+            reserveStatus.textContent = 'ご予約ありがとうございます！確認のご連絡をお待ちください。';
             reserveForm.reset();
             reserveBtn.disabled = false;
             reserveBtn.textContent = '予約を確定する';
