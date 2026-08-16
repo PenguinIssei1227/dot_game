@@ -31,20 +31,19 @@
 }
 
 body {
-  margin: 0;
-    background-color: var(--bg-color);
+        margin: 0;
+        /* 背景は画像のみ指定（背景色は個別ページで必要なら上書きしてください） */
+        background-image: url('bg.png');
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-attachment: fixed;  /* JSで位置を制御するため固定 */
 
-  background-image: url('bg.png');
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-attachment: fixed;  /* JSで位置を制御するため固定 */
+        color: var(--text-light);
+        line-height: 1.6;
 
-  color: var(--text-light);
-  line-height: 1.6;
-
-  /* ドット絵用のくっきり設定 */
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+        /* ドット絵用のくっきり設定 */
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
 }
 
 /* 固定背景用の要素（モバイルでこれを有効にする） */
@@ -252,17 +251,17 @@ label, .form-group label, .footer-social a {
 }
 
 /* countdown */
-  .countdown{
-    display:flex;gap:clamp(10px,2.4vw,26px);justify-content:center;flex-wrap:wrap;
-  }
-  .count-block{
-    background:var(--navy-panel);border:1px solid var(--navy-line);
-    padding:14px clamp(14px,2.4vw,22px);min-width:76px;
-  }
-  .timer-num{display:block;font-size:clamp(1.6rem,3.6vw,2.4rem);color:var(--red-bright);}
-  .count-block span.label{display:block;font-size:.68rem;color:var(--ink-dim);margin-top:6px;letter-spacing:.1em;}
+.countdown{
+  display:flex;gap:clamp(10px,2.4vw,26px);justify-content:center;flex-wrap:wrap;
+}
+.count-block{
+  background:var(--navy-panel);border:1px solid var(--navy-line);
+  padding:14px clamp(14px,2.4vw,22px);min-width:76px;
+}
+.timer-num{display:block;font-size:clamp(1.6rem,3.6vw,2.4rem);color:var(--red-bright);}
+.count-block span.label{display:block;font-size:.68rem;color:var(--ink-dim);margin-top:6px;letter-spacing:.1em;}
  
-  .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:.7rem;color:var(--blue-grey);z-index:2;}
+.scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:.7rem;color:var(--blue-grey);z-index:2;}
  
 
 /* --- 各コンテンツ共通スタイル --- */
@@ -798,6 +797,52 @@ footer {
         padding: 6px;
     }
 
+
+    /* ===== rules.html specific styles (migrated) =====
+       These styles were previously embedded in rules.html. Keeping them here
+       ensures rules page uses the same stylesheet. If duplicates exist, later
+       rules override earlier ones. */
+
+    /* Page-specific hero sizing */
+    .page-hero { padding: 120px 20px 40px; text-align:center; max-width:800px; margin:0 auto; }
+    .page-hero h1 { font-size:1.6rem; color:var(--primary-red); margin-bottom:10px; font-family:var(--font-dotmincho); letter-spacing:1px; }
+    .page-hero p { font-size:0.95rem; color:var(--text-muted); }
+
+    /* Table of contents (rules page) */
+    .toc { max-width:800px; margin: 20px auto; padding: 0 20px; }
+    .toc-title { color: var(--text-light); font-family: var(--font-dotmincho); margin-bottom:8px; }
+    .toc ul { list-style: none; display:flex; gap:10px; flex-wrap:wrap; }
+    .toc a { color: var(--text-muted); text-decoration:none; font-size:0.95rem; padding:6px 10px; border-radius:6px; }
+    .toc a:hover { background: rgba(184,0,28,0.08); color: var(--primary-red); }
+
+    /* Effect grid defaults used by rules.html (already present but ensure parity) */
+    .effect-grid { display:grid; grid-template-columns:1fr; gap:14px; }
+    .effect-card { display:flex; gap:14px; align-items:flex-start; background-color:var(--accent-gray); border-left:4px solid var(--primary-red); border-radius:4px; padding:14px; }
+    .effect-card img { width:56px; height:56px; object-fit:contain; background:#fff; border-radius:4px; padding:4px; flex-shrink:0; }
+    .effect-card .effect-name { font-weight:bold; color:var(--primary-red); margin-bottom:4px; font-size:0.95rem; }
+
+    /* Smaller table tweaks for rules page */
+    .rule-table th, .rule-table td { border:1px solid #333; padding:8px 10px; text-align:center; color:var(--text-muted); }
+
+    /* end migrated rules.html styles */
+
+    /* --- rules-page specific size overrides to restore previous layout --- */
+    .rules-page section {
+        padding: 40px 20px; /* smaller vertical padding like original */
+        max-width: 800px;
+    }
+    .rules-page .page-hero {
+        padding: 120px 20px 40px; /* restore original hero spacing */
+    }
+    .rules-page h2 {
+        font-size: 1.4rem; /* match previous size */
+    }
+    .rules-page .rule-box p, .rules-page .rule-box li {
+        font-size: 0.92rem; /* ensure readable but not oversized */
+    }
+    .rules-page .effect-card img { width:56px; height:56px; }
+    .rules-page .item-card img { max-height: 70%; }
+
     .item-card img {
         width: auto;
         height: 68%;
@@ -827,5 +872,196 @@ footer {
         justify-content: space-between;
         align-items: center;
         padding: 8px;
+    }
+}
+/* =========================================================
+   rules.html 用スタイル（グローバル / 全画面幅で有効）
+   ※以前このブロックはスマホ用メディアクエリ内に誤って
+     入っていたため、PC幅で無効化されていました。
+     こちらで正式にグローバルスコープに追加します。
+   ========================================================= */
+
+.rules-page .page-hero,
+.page-hero {
+    padding: 120px 20px 40px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.page-hero h1 {
+    font-size: 1.6rem;
+    color: var(--primary-red);
+    margin-bottom: 10px;
+    font-family: var(--font-dotmincho);
+    letter-spacing: 1px;
+}
+
+.page-hero p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--text-light);
+    text-decoration: none;
+    border: 1px solid var(--primary-red);
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.back-link:hover {
+    background-color: var(--primary-red);
+}
+
+/* 目次（Table of Contents） */
+.toc {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.toc-title {
+    color: var(--text-light);
+    font-family: var(--font-dotmincho);
+    margin-bottom: 8px;
+}
+
+.toc ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.toc a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+
+.toc a:hover {
+    background: rgba(184, 0, 28, 0.12);
+    color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+/* テキストルール用ボックス */
+.rule-box {
+    background-color: var(--accent-gray);
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+}
+
+.rule-box p, .rule-box li {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.rule-box ul {
+    padding-left: 20px;
+}
+
+.story-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.9;
+}
+
+h3.sub {
+    font-size: 1.05rem;
+    color: var(--primary-red);
+    margin: 22px 0 10px;
+    font-family: var(--font-dotmincho);
+}
+
+/* 道具/役職カードの効果一覧（グローバル版） */
+.effect-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.effect-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background-color: var(--accent-gray);
+    border-left: 4px solid var(--primary-red);
+    border-radius: 4px;
+    padding: 14px;
+}
+
+.effect-card img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 4px;
+    padding: 4px;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.effect-card .effect-name {
+    font-weight: bold;
+    color: var(--primary-red);
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    font-family: var(--font-dotmincho);
+}
+
+.effect-card p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+/* テーブル */
+.rule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+}
+
+.rule-table th, .rule-table td {
+    border: 1px solid #333;
+    padding: 8px 10px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.rule-table th {
+    background-color: var(--accent-gray);
+    color: var(--text-light);
+    font-family: var(--font-dotmincho);
+}
+
+.rule-table td:first-child {
+    color: var(--text-light);
+    font-weight: bold;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: -8px;
+    margin-bottom: 18px;
+}
+
+@media (min-width: 768px) {
+    .effect-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
