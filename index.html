@@ -14,10 +14,11 @@
         <a href="#" class="nav-logo"><img src="logo_shadow.png" alt="Dot."></a>
         <!-- PC用通常メニュー -->
         <ul class="nav-links">
-            <li><a href="#about">概要</a></li>
-            <li><a href="#rules">ルール</a></li>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="about.html">ゲームについて</a></li>
             <li><a href="rules.html">詳細ルール</a></li>
-            <li><a href="#reserve">ゲームマーケット予約</a></li>
+            <li><a href="market.html">ゲームマーケット</a></li>
+            <li><a href="news.html">ニュース</a></li>
         </ul>
         <!-- スマホ用ハンバーガーボタン -->
         <button class="hamburger" id="hamburger-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="メニュー開閉">
@@ -31,10 +32,11 @@
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
         <button id="mobile-menu-close" class="mobile-close" aria-label="メニューを閉じる">×</button>
         <ul>
-            <li><a href="#about" class="menu-link">概要</a></li>
-            <li><a href="#rules" class="menu-link">ルール</a></li>
+            <li><a href="index.html" class="menu-link">ホーム</a></li>
+            <li><a href="about.html" class="menu-link">ゲームについて</a></li>
             <li><a href="rules.html" class="menu-link">詳細ルール</a></li>
-            <li><a href="#reserve" class="menu-link">ゲームマーケット予約</a></li>
+            <li><a href="market.html" class="menu-link">ゲームマーケット</a></li>
+            <li><a href="news.html" class="menu-link">ニュース</a></li>
         </ul>
     </div>
 
@@ -47,12 +49,11 @@
         </p>
         <a href="#reserve" class="btn-cta">予約はこちら</a>
         <div class="countdown" id="countdown" aria-label="ゲームマーケットまでのカウントダウン">
-      　<div class="count-block"><span class="timer-num" id="cd-days">--</span><span class="label">DAYS</span></div>
-      　<div class="count-block"><span class="timer-num" id="cd-hours">--</span><span class="label">HOURS</span></div>
-      　<div class="count-block"><span class="timer-num" id="cd-mins">--</span><span class="label">MIN</span></div>
-      　<div class="count-block"><span class="timer-num" id="cd-secs">--</span><span class="label">SEC</span></div>
-    　　</div>
-     　 <div class="scroll-cue">SCROLL ▾</div>
+            <div class="count-block"><span class="timer-num" id="cd-days">--</span><span class="label">DAYS</span></div>
+            <div class="count-block"><span class="timer-num" id="cd-hours">--</span><span class="label">HOURS</span></div>
+            <div class="count-block"><span class="timer-num" id="cd-mins">--</span><span class="label">MIN</span></div>
+            <div class="count-block"><span class="timer-num" id="cd-secs">--</span><span class="label">SEC</span></div>
+        </div>
     </header>
 
     <!-- ルール概要セクション -->
@@ -433,6 +434,34 @@
             reserveBtn.textContent = '予約を確定する';
             formSubmitted = false;
         });
+        // ---------- Countdown ----------
+        // TODO: 実際のゲームマーケット開催日時に書き換えてください
+        const targetDate = new Date('2026-10-18T00:00:00+09:00').getTime();
+ 
+        function updateCountdown(){
+          const now = Date.now();
+          const diff = targetDate - now;
+          const els = {
+            d: document.getElementById('cd-days'),
+            h: document.getElementById('cd-hours'),
+            m: document.getElementById('cd-mins'),
+            s: document.getElementById('cd-secs')
+          };
+          if(diff <= 0){
+            els.d.textContent = '00'; els.h.textContent='00'; els.m.textContent='00'; els.s.textContent='00';
+            return;
+          }
+          const day = Math.floor(diff/86400000);
+          const hr  = Math.floor((diff%86400000)/3600000);
+          const min = Math.floor((diff%3600000)/60000);
+          const sec = Math.floor((diff%60000)/1000);
+          els.d.textContent = String(day).padStart(2,'0');
+          els.h.textContent = String(hr).padStart(2,'0');
+          els.m.textContent = String(min).padStart(2,'0');
+          els.s.textContent = String(sec).padStart(2,'0');
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
