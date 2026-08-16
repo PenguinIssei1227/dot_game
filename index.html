@@ -333,7 +333,7 @@
             /* 添付カード画像から切り出した背景テクスチャを使用 */
             background-color: #efd09a;
             background-image: url('Dot_card_bg.png');
-            background-size: cover;
+            background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
         }
@@ -348,7 +348,7 @@
         .role-card {
             background-color: #efd09a;
             background-image: url('Dot_card_bg.png');
-            background-size: cover;
+            background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
         }
@@ -500,6 +500,61 @@
             overflow: hidden;
         }
 
+
+        @media (max-width: 520px) {
+            /* スマホではカード背景をカードの形にぴったり合わせる */
+            .item-card {
+                background-size: 100% 100%;
+            }
+
+            /* 道具カード：上3枚・下4枚を画面幅に合わせて均等配置 */
+            .tool-grid {
+                gap: 10px;
+            }
+
+            .tool-row {
+                gap: 8px;
+                width: 100%;
+            }
+
+            .tool-row .item-card {
+                flex: 1 1 0;
+                min-width: 0;
+                padding: 6px;
+            }
+
+            .tool-row .item-card img {
+                width: 100%;
+                height: auto;
+            }
+
+            .tool-row .item-card p {
+                font-size: 0.68rem;
+                margin-top: 2px;
+            }
+
+            /* 役職カードも4枚が画面内に自然に収まるよう調整 */
+            .item-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .item-grid .item-card {
+                min-width: 0;
+                padding: 7px;
+            }
+
+            .item-grid .item-card img {
+                width: 100%;
+                height: auto;
+            }
+
+            /* 背景がカードからはみ出して見えないようにする */
+            .item-card {
+                overflow: hidden;
+            }
+        }
+
         @media (max-width: 520px) {
             .tool-modal-panel {
                 padding: 24px 16px 20px;
@@ -593,6 +648,16 @@
 
         .footer-social a:hover {
             opacity: 0.8;
+        }
+
+
+        @media (max-width: 767px) {
+            body {
+                background-attachment: scroll;
+                background-size: auto 100vh;
+                background-position: top center;
+                background-repeat: repeat-y;
+            }
         }
 
         /* --- メディアクエリ（PC向け調整） --- */
@@ -771,6 +836,13 @@
         const BG_HEIGHT_FACTOR = 1.6; // 大きいほど背景がゆっくり動く（1に近いほど通常スクロールに近づく）
 
         function updateBackgroundScroll() {
+            // スマホでは固定背景＋パララックスによる引き伸ばしを避ける
+            if (window.innerWidth < 768) {
+                document.body.style.backgroundSize = '';
+                document.body.style.backgroundPositionY = '';
+                return;
+            }
+
             const viewportHeight = window.innerHeight;
             const bgHeight = viewportHeight * BG_HEIGHT_FACTOR;
             document.body.style.backgroundSize = '100% ' + bgHeight + 'px';
