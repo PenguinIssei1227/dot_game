@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>詳細ルール | Dot. (Duel of Tactics)</title>
+    <title>詳細ルール | Dot. </title>
     <style>
+        /* 自作・フリーフォントファイルを読み込む場合 */
+        @font-face {
+            font-family: 'DotMincho16';
+            src: url('KH-Dot-Kagurazaka-16.ttf') format('truetype');
+        }
+
+        /* 適用するクラスや要素 */
+        .dot-mincho-text {
+            font-family: 'DotMincho16', serif;
+            font-size: 16px; /* ドット感を活かすためジャストサイズか倍率で調整 */
+        }
+
         /* --- 基本設定 & カラーパレット --- */
         :root {
             --bg-color: #0b0b0b;
@@ -13,6 +25,7 @@
             --text-light: #ffffff;
             --text-muted: #b0b0b0;
             --font-pixel: 'Courier New', Courier, monospace;
+            --font-dotmincho: 'ドット明朝16', 'DotMincho16', serif; /* 本文以外用フォント */
         }
 
         * {
@@ -20,19 +33,28 @@
             margin: 0;
             padding: 0;
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; /* スムーズスクロール */
         }
 
         body {
-          margin: 0;
-          background-image: url('bg.png');
-          background-repeat: no-repeat;
-          background-position: top center;
-          background-attachment: fixed;
-          color: var(--text-light);
-          line-height: 1.6;
-          image-rendering: pixelated;
-          image-rendering: crisp-edges;
+            margin: 0;
+
+            background-image: url('bg.png');
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-attachment: fixed;  /* JSで位置を制御するため固定 */
+
+            color: var(--text-light);
+            line-height: 1.6;
+
+            /* ドット絵用のくっきり設定 */
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* 固定背景用の要素（モバイルでこれを有効にする） */
+        .fixed-bg {
+            display: none; /* デフォルトは非表示（デスクトップはbody背景を使用） */
         }
 
         /* --- ナビゲーション --- */
@@ -56,7 +78,7 @@
             color: var(--primary-red);
             font-size: 1.5rem;
             text-decoration: none;
-            font-family: var(--font-pixel);
+            font-family: var(--font-dotmincho);
         }
 
         .nav-logo img {
@@ -146,7 +168,7 @@
             font-size: 1.6rem;
             color: var(--primary-red);
             margin-bottom: 10px;
-            font-family: var(--font-pixel);
+            font-family: var(--font-dotmincho);
             letter-spacing: 1px;
         }
 
@@ -182,7 +204,7 @@
             font-size: 1.4rem;
             color: var(--text-light);
             margin-bottom: 20px;
-            font-family: var(--font-pixel);
+            font-family: var(--font-dotmincho);
             position: relative;
             padding-left: 12px;
             border-left: 5px solid var(--primary-red);
