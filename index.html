@@ -32,6 +32,9 @@
           background-repeat: repeat-x;    /* 横方向（X軸）のみ画像を繰り返す */
           background-attachment: scroll;  /* スクロールと一緒に動かす */
 
+          color: var(--text-light);
+          line-height: 1.6;
+
           /* ドット絵用のくっきり設定 */
           image-rendering: pixelated;
           image-rendering: crisp-edges;
@@ -237,6 +240,7 @@
             padding: 8px 16px;
             font-size: 0.9rem;
             font-weight: bold;
+            color: var(--text-light);
         }
 
         .rule-step {
@@ -255,6 +259,49 @@
         .rule-step p {
             font-size: 0.95rem;
             color: var(--text-muted);
+        }
+
+        /* --- アイテム＆役職ギャラリー --- */
+        .subheading {
+            color: var(--primary-red);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 40px 0 20px;
+            font-family: var(--font-pixel);
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .item-card {
+            background-color: #ffffff;
+            border: 2px solid var(--primary-red);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .item-card img {
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #111;
         }
 
         /* --- 取置き予約フォーム --- */
@@ -402,6 +449,27 @@
         <div class="rule-step">
             <h3>3. 勝者の確定</h3>
             <p>心理戦を制し、夜のフェーズで勝利した者がポイントを獲得。先に4ポイントに達したスレイヤーが勝者となります。</p>
+        </div>
+
+        <!-- 道具カード ギャラリー -->
+        <div class="subheading">道具カード</div>
+        <div class="item-grid">
+            <div class="item-card"><img src="Cigar.png" alt="葉巻"><p>葉巻</p></div>
+            <div class="item-card"><img src="Coin.png" alt="コイン"><p>金貨</p></div>
+            <div class="item-card"><img src="Crystal_Ball.png" alt="水晶玉"><p>水晶</p></div>
+            <div class="item-card"><img src="Gun.png" alt="拳銃"><p>拳銃</p></div>
+            <div class="item-card"><img src="Mask.png" alt="仮面"><p>仮面</p></div>
+            <div class="item-card"><img src="Red_Flag.png" alt="赤い旗"><p>赤旗</p></div>
+            <div class="item-card"><img src="Warrant.png" alt="令状"><p>令状</p></div>
+        </div>
+
+        <!-- 役職 ギャラリー -->
+        <div class="subheading">役職</div>
+        <div class="item-grid">
+            <div class="item-card"><img src="Citizen.png" alt="市民"><p>市民</p></div>
+            <div class="item-card"><img src="Jester.png" alt="道化師"><p>道化</p></div>
+            <div class="item-card"><img src="Noble.png" alt="貴族"><p>貴族</p></div>
+            <div class="item-card"><img src="Slave.png" alt="奴隷"><p>奴隷</p></div>
         </div>
     </section>
 
