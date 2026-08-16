@@ -146,6 +146,33 @@ label, .form-group label, .footer-social a {
     z-index: 105;
 }
 
+/* ハンバーガーメニューのフォントをドット明朝に変更 */
+.mobile-menu, .mobile-menu a, .mobile-menu .menu-link {
+    font-family: var(--font-dotmincho);
+    font-size: 16px;
+}
+
+/* モバイルメニューの右上に表示する閉じるボタン */
+.mobile-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 120;
+}
+
+.mobile-close:hover,
+.mobile-close:focus-visible {
+    color: var(--primary-red);
+    outline: 2px solid rgba(184,0,28,0.18);
+    border-radius: 6px;
+}
+
 .mobile-menu.active {
     right: 0;
 }
@@ -551,11 +578,13 @@ body.modal-open {
 @media (max-width: 767px) {
     body {
         background-attachment: fixed;
-        /* モバイルは幅基準で高さ自動、JSで制御している場合はそちらが優先 */
-        background-size: 100% auto;
+        /* モバイルは高さ基準で背景を合わせて固定表示（幅は自動） */
+        background-size: auto 100%;
+        background-position: top center;
     }
     .hero {
-        padding: 2rem 1rem;
+        /* 固定ナビに被らない余白を確保（ナビ高さ + 余白） */
+        padding: 88px 1rem 20px;
     }
 }
 
@@ -585,16 +614,21 @@ body.modal-open {
         margin-top: 2px;
     }
 
-    /* 役職カードも4枚が画面内に自然に収まるよう調整 */
+    /* 役職カード：モバイルでも横4列に収めてスクロール不要にする */
     .item-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 6px 6px;
+        width: 100%;
     }
 
+    /* カードをグリッドセルいっぱいに広げ、ボーダーやパディングを含めて収まるようにする */
     .item-grid .item-card {
-        min-width: 0;
-        padding: 7px;
-        aspect-ratio: 1 / 1; /* 正方形を維持 */
+        width: 100%;
+        box-sizing: border-box;
+        aspect-ratio: 1 / 1;
+        padding: 6px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -604,6 +638,11 @@ body.modal-open {
     .item-grid .item-card img {
         width: 100%;
         height: auto;
+        max-height: 70%;
+        object-fit: contain;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        margin-bottom: 8px;
     }
 
     /* 背景がカードからはみ出して見えないようにする */
@@ -711,8 +750,10 @@ footer {
 @media (max-width: 767px) {
     /* モバイルでは body の背景を無効化して、固定レイヤーを使う */
     body {
+        /* bodyの背景は無効化して固定レイヤー `.fixed-bg` を使う（ただしbodyは高さ基準の固定挙動を維持） */
         background-image: none !important;
-        background-attachment: scroll !important;
+        background-attachment: fixed !important;
+        background-size: auto 100% !important;
     }
 
     .fixed-bg {
@@ -721,9 +762,8 @@ footer {
         inset: 0;
         z-index: -1;
         background-image: url('bg.png');
-        /* 元画像の縦横比を保つ（幅は自動、表示高さはビューポートに合わせる） */
-        /* 幅をビューポート幅に合わせ、縦横比を保持する（元画像の比率を維持） */
-        background-size: 100% auto;
+        /* 元画像の縦横比を保ちながら高さをビューポートに合わせる */
+        background-size: auto 100%;
         background-color: var(--bg-color);
         background-position: top center;
         background-repeat: no-repeat;
@@ -732,6 +772,25 @@ footer {
         pointer-events: none;
         -webkit-backface-visibility: hidden;
         -webkit-transform: translateZ(0);
+    }
+
+    /* モバイルではカード内のテキストを非表示にして画像を中央に配置 */
+    .item-card p {
+        display: none;
+    }
+
+    .item-card {
+        justify-content: center; /* 画像を縦中央に */
+        padding: 6px;
+    }
+
+    .item-card img {
+        width: auto;
+        height: 68%;
+        max-height: 68%;
+        object-fit: contain;
+        margin: 0 auto;
+        display: block;
     }
 }
 
