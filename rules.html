@@ -3,365 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>詳細ルール | Dot. </title>
-    <style>
-        /* 自作・フリーフォントファイルを読み込む場合 */
-        @font-face {
-            font-family: 'DotMincho16';
-            src: url('KH-Dot-Kagurazaka-16.ttf') format('truetype');
-        }
-
-        /* 適用するクラスや要素 */
-        .dot-mincho-text {
-            font-family: 'DotMincho16', serif;
-            font-size: 16px; /* ドット感を活かすためジャストサイズか倍率で調整 */
-        }
-
-        /* --- 基本設定 & カラーパレット --- */
-        :root {
-            --bg-color: #0b0b0b;
-            --primary-red: #b8001c;
-            --accent-gray: #1a1a1a;
-            --text-light: #ffffff;
-            --text-muted: #b0b0b0;
-            --font-pixel: 'Courier New', Courier, monospace;
-            --font-dotmincho: 'ドット明朝16', 'DotMincho16', serif; /* 本文以外用フォント */
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
-            scroll-behavior: smooth; /* スムーズスクロール */
-        }
-
-        body {
-            margin: 0;
-
-            background-image: url('bg.png');
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-attachment: fixed;  /* JSで位置を制御するため固定 */
-
-            color: var(--text-light);
-            line-height: 1.6;
-
-            /* ドット絵用のくっきり設定 */
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-
-        /* 固定背景用の要素（モバイルでこれを有効にする） */
-        .fixed-bg {
-            display: none; /* デフォルトは非表示（デスクトップはbody背景を使用） */
-        }
-
-        /* --- ナビゲーション --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(11, 11, 11, 0.95);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            border-bottom: 2px solid var(--primary-red);
-        }
-
-        .nav-logo {
-            display: inline-flex;
-            align-items: center;
-            font-weight: bold;
-            color: var(--primary-red);
-            font-size: 1.5rem;
-            text-decoration: none;
-            font-family: var(--font-dotmincho);
-        }
-
-        .nav-logo img {
-            height: 34px;
-            width: auto;
-            display: block;
-            image-rendering: pixelated;
-        }
-
-        .nav-links {
-            display: none;
-            list-style: none;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-red);
-        }
-
-        .hamburger {
-            display: block;
-            cursor: pointer;
-            background: none;
-            border: none;
-            z-index: 110;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: var(--text-light);
-            margin: 5px 0;
-            transition: 0.3s;
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 70%;
-            height: 100vh;
-            background-color: rgba(11, 11, 11, 0.98);
-            border-left: 2px solid var(--primary-red);
-            padding-top: 80px;
-            transition: 0.3s;
-            z-index: 105;
-        }
-
-        .mobile-menu.active { right: 0; }
-
-        .mobile-menu ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .mobile-menu a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-
-        .hamburger.active span:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
-
-        /* --- ページヘッダー --- */
-        .page-hero {
-            padding: 120px 20px 40px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .page-hero h1 {
-            font-size: 1.6rem;
-            color: var(--primary-red);
-            margin-bottom: 10px;
-            font-family: var(--font-dotmincho);
-            letter-spacing: 1px;
-        }
-
-        .page-hero p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: var(--text-light);
-            text-decoration: none;
-            border: 1px solid var(--primary-red);
-            padding: 8px 18px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            transition: background 0.2s;
-        }
-
-        .back-link:hover {
-            background-color: var(--primary-red);
-        }
-
-        /* --- 共通セクション --- */
-        section {
-            padding: 40px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            color: var(--text-light);
-            margin-bottom: 20px;
-            font-family: var(--font-dotmincho);
-            position: relative;
-            padding-left: 12px;
-            border-left: 5px solid var(--primary-red);
-        }
-
-        h3.sub {
-            font-size: 1.05rem;
-            color: var(--primary-red);
-            margin: 22px 0 10px;
-        }
-
-        .rule-box {
-            background-color: var(--accent-gray);
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 18px 20px;
-            margin-bottom: 18px;
-        }
-
-        .rule-box p, .rule-box li {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .rule-box ul {
-            padding-left: 20px;
-        }
-
-        .story-text {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.9;
-        }
-
-        /* --- 道具/役職カードの効果 --- */
-        .effect-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 14px;
-        }
-
-        .effect-card {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-            background-color: var(--accent-gray);
-            border-left: 4px solid var(--primary-red);
-            border-radius: 4px;
-            padding: 14px;
-        }
-
-        .effect-card img {
-            width: 56px;
-            height: 56px;
-            object-fit: contain;
-            background: #fff;
-            border-radius: 4px;
-            padding: 4px;
-            flex-shrink: 0;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-
-        .effect-card .effect-name {
-            font-weight: bold;
-            color: var(--primary-red);
-            margin-bottom: 4px;
-            font-size: 0.95rem;
-        }
-
-        .effect-card p {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-        }
-
-        /* --- テーブル --- */
-        .rule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 18px;
-            font-size: 0.85rem;
-        }
-
-        .rule-table th, .rule-table td {
-            border: 1px solid #333;
-            padding: 8px 10px;
-            text-align: center;
-            color: var(--text-muted);
-        }
-
-        .rule-table th {
-            background-color: var(--accent-gray);
-            color: var(--text-light);
-        }
-
-        .rule-table td:first-child {
-            color: var(--text-light);
-            font-weight: bold;
-        }
-
-        .note {
-            font-size: 0.8rem;
-            color: #777;
-            margin-top: -8px;
-            margin-bottom: 18px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 0.8rem;
-            color: #555;
-            border-top: 1px solid #222;
-        }
-
-        @media (min-width: 768px) {
-            .nav-links { display: flex; }
-            .hamburger { display: none; }
-            .mobile-menu { display: none; }
-            .page-hero h1 { font-size: 2rem; }
-            .effect-grid { grid-template-columns: 1fr 1fr; }
-        }
-    </style>
+    <title>詳細ルール | Dot. - Official Website</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="rules-page">
+    <div class="fixed-bg" aria-hidden="true"></div>
 
     <!-- ナビゲーションバー -->
     <nav>
         <a href="index.html" class="nav-logo"><img src="logo_shadow.png" alt="Dot."></a>
+        <!-- PC用通常メニュー -->
         <ul class="nav-links">
-            <li><a href="index.html#about">概要</a></li>
-            <li><a href="index.html#rules">ルール</a></li>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="about.html">ゲームについて</a></li>
             <li><a href="rules.html">詳細ルール</a></li>
-            <li><a href="index.html#reserve">ゲームマーケット予約</a></li>
+            <li><a href="market.html">ゲームマーケット</a></li>
+            <li><a href="news.html">ニュース</a></li>
         </ul>
-        <button class="hamburger" id="hamburger-btn">
-            <span></span><span></span><span></span>
+        <!-- スマホ用ハンバーガーボタン -->
+        <button class="hamburger" id="hamburger-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="メニュー開閉">
+            <span></span>
+            <span></span>
+            <span></span>
         </button>
     </nav>
 
-    <div class="mobile-menu" id="mobile-menu">
+    <!-- スマホ用ドロワーメニュー -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <button id="mobile-menu-close" class="mobile-close" aria-label="メニューを閉じる">×</button>
         <ul>
-            <li><a href="index.html#about" class="menu-link">概要</a></li>
-            <li><a href="index.html#rules" class="menu-link">ルール</a></li>
+            <li><a href="index.html" class="menu-link">ホーム</a></li>
+            <li><a href="about.html" class="menu-link">ゲームについて</a></li>
             <li><a href="rules.html" class="menu-link">詳細ルール</a></li>
-            <li><a href="index.html#reserve" class="menu-link">ゲームマーケット予約</a></li>
+            <li><a href="market.html" class="menu-link">ゲームマーケット</a></li>
+            <li><a href="news.html" class="menu-link">ニュース</a></li>
         </ul>
     </div>
 
     <!-- ページヘッダー -->
     <header class="page-hero">
+        <img src="Dot_logo.png" alt="Dot.">
         <h1>詳細ルール</h1>
         <p>『Dot.』の説明書全文をこちらに掲載しています。</p>
         <a href="index.html" class="back-link">← トップページに戻る</a>
     </header>
-
+    
     <!-- ストーリー -->
     <section id="story">
         <h2>ストーリー</h2>
@@ -514,7 +200,7 @@
                 </div>
             </div>
         </div>
-        <p class="note">※各効果は説明書の文字が非常に小さく、判読が難しい箇所がありました。実際のプレイ前に、お手元の説明書ともあわせてご確認ください。</p>
+        <p class="note">※トップページの道具カードをクリックすると、ポップアップでも同じ内容を確認できます。</p>
     </section>
 
     <!-- 5. 夜フェーズ -->
@@ -567,15 +253,15 @@
             <p><strong>①戦力を決める</strong></p>
             <ul>
                 <li>役職が市民の場合：道具値＋赤旗の効果</li>
-                <li>役職が貴族の場合：相手が貴族なら道具値、それ以外は道具値-2</li>
-                <li>役職が奴隷の場合：相手が貴族のとき戦力10</li>
+                <li>役職が貴族の場合：拳銃使用時に効果+2</li>
+                <li>役職が奴隷の場合：基本は戦力-2。相手が貴族のとき戦力が大きく上昇</li>
             </ul>
             <p><strong>②勝者を決める</strong></p>
             <ul>
                 <li>受け手が奇襲を選んでいた場合は、宣言の的中・不的中で勝敗が決まる</li>
-                <li>対抗の場合、互いの戦力を比較し、高いほうが勝者。同じ場合は攻め手が勝者（攻め手が道化の場合は例外あり）</li>
+                <li>対抗の場合、互いの戦力を比較し、高いほうが勝者。同じ場合は攻め手が勝者（役職「道化」による逆転あり）</li>
             </ul>
-            <p class="note" style="margin-top:8px;">※このフローチャートは図解を文章化したものです。条件分岐の細部は実物の説明書（裏面）も必ずご確認ください。</p>
+            <p class="note" style="margin-top:8px;">※このフローチャートは図解を文章化したものです。条件分岐の細部は実物の説明書も必ずご確認ください。</p>
         </div>
 
         <h3 class="sub">役職カードの効果</h3>
@@ -584,7 +270,7 @@
                 <img src="Citizen.png" alt="市民">
                 <div>
                     <div class="effect-name">市民</div>
-                    <p>赤旗との組み合わせで戦力が10になる。</p>
+                    <p>赤旗の戦力が10になる。</p>
                 </div>
             </div>
             <div class="effect-card">
@@ -598,18 +284,18 @@
                 <img src="Slave.png" alt="奴隷">
                 <div>
                     <div class="effect-name">奴隷</div>
-                    <p>戦力-2。ただし相手が貴族の場合は戦力10になる。</p>
+                    <p>基本は戦力-2。相手が貴族のときは戦力×2。</p>
                 </div>
             </div>
             <div class="effect-card">
                 <img src="Jester.png" alt="道化">
                 <div>
                     <div class="effect-name">道化</div>
-                    <p>自分が受け手の場合、戦局を逆転できる。</p>
+                    <p>自分が受け手の場合、勝者が逆転する。</p>
                 </div>
             </div>
         </div>
-        <p class="note">※役職効果も文字が小さく判読が難しい箇所があります。実物の説明書とあわせてご確認ください。</p>
+        <p class="note">※トップページの役職カードをクリックすると、ポップアップでも同じ内容を確認できます。</p>
     </section>
 
     <!-- 6. ラウンド終了 -->
@@ -649,8 +335,8 @@
         <h3 class="sub">赤旗と拳銃の効果</h3>
         <div class="rule-box">
             <ul>
-                <li>道具カードの効果は、カードを出した瞬間に発動する。</li>
-                <li>昼に場に出した場合でも、夜の効果の条件を満たせなかった場合は効果が発動しない。</li>
+                <li>道具カードの効果は、カードを出した瞬間ではなく、夜フェーズの条件を満たしたときに発動する。</li>
+                <li>昼に場に出しても、夜の効果の条件を満たせなかった場合は効果が発動しない。</li>
                 <li>よって、赤旗を昼に出しても、攻め手になれなかった場合は赤旗の効果は無し。</li>
                 <li>また、拳銃を出しても、決闘の攻め手・受け手になれなかった場合は拳銃の効果は無し。</li>
                 <li>赤旗と拳銃はそれぞれ1枚しかない。使いどころを見極めよう。</li>
@@ -671,20 +357,46 @@
 
     <!-- フッター -->
     <footer>
-        <p>&copy; 2026 Duel of Tactics (Dot.) All Rights Reserved.</p>
+        <p>&copy; 2026 Dot. All Rights Reserved.</p>
+        <div class="footer-social">
+            <a href="https://twitter.com/Dot_szkcard" target="_blank">𝕏</a>
+            <a href="https://instagram.com/dot_szkcard/" target="_blank">Instagram</a>
+        </div>
     </footer>
 
+    <!-- JavaScript -->
     <script>
-        // 背景のスローパラララックス制御（トップページと同じ処理）
+        // --- 背景のスローパラララックス制御（index.htmlと同じ処理） ---
         const BG_HEIGHT_FACTOR = 1.6;
 
         function updateBackgroundScroll() {
+            if (window.innerWidth < 768) {
+                document.body.style.backgroundAttachment = 'fixed';
+                document.body.style.backgroundSize = '100% auto';
+                document.body.style.backgroundPositionY = '0px';
+                return;
+            }
+
+            const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            const bgHeight = viewportHeight * BG_HEIGHT_FACTOR;
+
+            if (!window._bgNatural) {
+                const img = new Image();
+                img.src = 'bg.png';
+                img.onload = function() {
+                    window._bgNatural = { w: img.naturalWidth, h: img.naturalHeight };
+                    updateBackgroundScroll();
+                };
+                document.body.style.backgroundSize = '100% auto';
+                return;
+            }
+
+            const natural = window._bgNatural;
+            const bgHeight = Math.round(viewportWidth * natural.h / natural.w);
             document.body.style.backgroundSize = '100% ' + bgHeight + 'px';
 
             const scrollableHeight = document.documentElement.scrollHeight - viewportHeight;
-            const maxBgOffset = bgHeight - viewportHeight;
+            const maxBgOffset = Math.max(bgHeight - viewportHeight, 0);
 
             if (scrollableHeight <= 0 || maxBgOffset <= 0) {
                 document.body.style.backgroundPositionY = '0px';
@@ -700,20 +412,32 @@
         window.addEventListener('load', updateBackgroundScroll);
         updateBackgroundScroll();
 
-        // ハンバーガーメニュー
+        // --- ハンバーガーメニュー（index.htmlと同じ処理） ---
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuLinks = document.querySelectorAll('.menu-link');
 
         function toggleMenu() {
-            hamburgerBtn.classList.toggle('active');
+            const isActive = hamburgerBtn.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburgerBtn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            mobileMenu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
         }
 
         hamburgerBtn.addEventListener('click', toggleMenu);
         menuLinks.forEach(link => {
             link.addEventListener('click', toggleMenu);
         });
+
+        const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+        if (mobileMenuCloseBtn) {
+            mobileMenuCloseBtn.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('active')) toggleMenu();
+            });
+        }
+
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
     </script>
 </body>
 </html>
