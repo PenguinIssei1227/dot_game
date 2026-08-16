@@ -24,15 +24,19 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: url('bg.png');
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            background-position: top center;
-            background-attachment: fixed;
-            color: var(--text-light);
-            line-height: 1.6;
+          margin: 0;
+  
+          background-image: url('your-image.png');
+          background-size: contain;      /* 縦幅または横幅に合わせてフィット */
+          background-position: top center; /* 上部中央を基準にする */
+          background-repeat: repeat-x;    /* 横方向（X軸）のみ画像を繰り返す */
+          background-attachment: scroll;  /* スクロールと一緒に動かす */
+
+          /* ドット絵用のくっきり設定 */
+          image-rendering: pixelated;
+          image-rendering: crisp-edges;
         }
+
 
         /* --- ナビゲーション & ハンバーガーメニュー --- */
         nav {
