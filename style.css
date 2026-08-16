@@ -251,6 +251,20 @@ label, .form-group label, .footer-social a {
     transform: translate(4px, 4px);
 }
 
+/* countdown */
+  .countdown{
+    display:flex;gap:clamp(10px,2.4vw,26px);justify-content:center;flex-wrap:wrap;
+  }
+  .count-block{
+    background:var(--navy-panel);border:1px solid var(--navy-line);
+    padding:14px clamp(14px,2.4vw,22px);min-width:76px;
+  }
+  .timer-num{display:block;font-size:clamp(1.6rem,3.6vw,2.4rem);color:var(--red-bright);}
+  .count-block span.label{display:block;font-size:.68rem;color:var(--ink-dim);margin-top:6px;letter-spacing:.1em;}
+ 
+  .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:.7rem;color:var(--blue-grey);z-index:2;}
+ 
+
 /* --- 各コンテンツ共通スタイル --- */
 section {
     padding: 60px 20px;
