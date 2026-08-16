@@ -4,672 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dot. (Duel of Tactics) - ゲームマーケット特設ページ</title>
-    <style>
-        /* --- 基本設定 & カラーパレット --- */
-        :root {
-            --bg-color: #0b0b0b;       /* 漆黒 */
-            --primary-red: #b8001c;    /* ロゴの深い赤 */
-            --accent-gray: #1a1a1a;    /* コンテンツ背景用 */
-            --text-light: #ffffff;
-            --text-muted: #b0b0b0;
-            --font-pixel: 'Courier New', Courier, monospace; /* ドット感を出すフォント */
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
-            scroll-behavior: smooth; /* スムーズスクロール */
-        }
-
-        body {
-          margin: 0;
-
-          background-image: url('bg.png');
-          background-repeat: no-repeat;
-          background-position: top center;
-          background-attachment: fixed;  /* JSで位置を制御するため固定 */
-
-          color: var(--text-light);
-          line-height: 1.6;
-
-          /* ドット絵用のくっきり設定 */
-          image-rendering: pixelated;
-          image-rendering: crisp-edges;
-        }
-
-
-        /* --- ナビゲーション & ハンバーガーメニュー --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(11, 11, 11, 0.95);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            border-bottom: 2px solid var(--primary-red);
-        }
-
-        .nav-logo {
-            display: inline-flex;
-            align-items: center;
-            font-weight: bold;
-            color: var(--primary-red);
-            font-size: 1.5rem;
-            text-decoration: none;
-            font-family: var(--font-pixel);
-        }
-
-        .nav-logo img {
-            height: 34px;
-            width: auto;
-            display: block;
-            image-rendering: pixelated;
-        }
-
-        /* デスクトップ用メニュー（初期状態は非表示、スマホ優先） */
-        .nav-links {
-            display: none;
-            list-style: none;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-red);
-        }
-
-        /* ハンバーガーアイコン */
-        .hamburger {
-            display: block;
-            cursor: pointer;
-            background: none;
-            border: none;
-            z-index: 110;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: var(--text-light);
-            margin: 5px 0;
-            transition: 0.3s;
-        }
-
-        /* モバイル用ドロワーメニュー */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 70%;
-            height: 100vh;
-            background-color: rgba(11, 11, 11, 0.98);
-            border-left: 2px solid var(--primary-red);
-            padding-top: 80px;
-            transition: 0.3s;
-            z-index: 105;
-        }
-
-        .mobile-menu.active {
-            right: 0;
-        }
-
-        .mobile-menu ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .mobile-menu a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-
-        /* ハンバーガーアニメーション用 */
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-
-        /* --- ヒーローセクション（ファーストビュー） --- */
-        .hero {
-            padding: 120px 20px 60px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero img {
-            max-width: 260px;
-            width: 100%;
-            image-rendering: pixelated;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: 1.4rem;
-            color: var(--primary-red);
-            margin-bottom: 15px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .hero .intro-text {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-
-        /* CTAボタン */
-        .btn-cta {
-            display: inline-block;
-            background-color: var(--primary-red);
-            color: #fff;
-            padding: 15px 40px;
-            font-weight: bold;
-            text-decoration: none;
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px #fff;
-            transition: 0.2s;
-            text-transform: uppercase;
-        }
-
-        .btn-cta:active {
-            box-shadow: 0px 0px 0px #fff;
-            transform: translate(4px, 4px);
-        }
-
-        /* --- 各コンテンツ共通スタイル --- */
-        section {
-            padding: 60px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            font-size: 1.6rem;
-            text-align: center;
-            color: var(--text-light);
-            margin-bottom: 30px;
-            font-family: var(--font-pixel);
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            display: block;
-            width: 40px;
-            height: 4px;
-            background-color: var(--primary-red);
-            margin: 10px auto 0;
-        }
-
-        /* --- シンプルなルール概要 --- */
-        .info-badge-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .info-badge {
-            background: var(--accent-gray);
-            border: 1px solid #333;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--text-light);
-        }
-
-        .rule-step {
-            background-color: var(--accent-gray);
-            border-left: 4px solid var(--primary-red);
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-
-        .rule-step h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            color: var(--primary-red);
-        }
-
-        .rule-step p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        /* --- アイテム＆役職ギャラリー --- */
-        .subheading {
-            color: var(--primary-red);
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            margin: 40px 0 20px;
-            font-family: var(--font-pixel);
-        }
-
-        .item-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-        }
-
-        /* 道具カード：上段3枚・下段4枚 */
-        .tool-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .tool-row {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        /* 上段3枚・下段4枚とも、4列時と同じカード幅に統一 */
-        .tool-row .item-card {
-            flex: 0 0 calc((100% - 45px) / 4);
-        }
-
-        .item-card {
-            background-image: url('Dot_card_bg.png');
-            border: 2px solid var(--primary-red);
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-
-        .item-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .item-card img {
-            width: 100%;
-            height: auto;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            margin-bottom: 8px;
-        }
-
-        .item-card p {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #111;
-        }
-
-
-
-        /* --- 道具カード詳細モーダル --- */
-        .tool-card {
-            appearance: none;
-            -webkit-appearance: none;
-            font: inherit;
-            cursor: pointer;
-
-            /* 添付カード画像から切り出した背景テクスチャを使用 */
-            background-color: #efd09a;
-            background-image: url('Dot_card_bg.png');
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* 道具カード・役職カードの絵は背景テクスチャの上にそのまま表示 */
-        .tool-card img,
-        .role-card img {
-            background: transparent;
-        }
-
-        /* 役職カードにも道具カードと同じ紙背景を使用 */
-        .role-card {
-            background-color: #efd09a;
-            background-image: url('Dot_card_bg.png');
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .tool-card:focus-visible {
-            outline: 3px solid #fff;
-            outline-offset: 3px;
-        }
-
-        .tool-card::after {
-            content: '詳細を見る';
-            display: block;
-            margin-top: 4px;
-            color: var(--primary-red);
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        .tool-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 16px;
-            background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.22s ease, visibility 0.22s ease;
-        }
-
-        .tool-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .tool-modal-panel {
-            position: relative;
-            width: min(620px, 100%);
-            max-height: min(82vh, 760px);
-            overflow-y: auto;
-            background: #111;
-            border: 2px solid var(--primary-red);
-            border-radius: 10px;
-            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.65);
-            padding: 28px 22px 24px;
-            transform: translateY(18px) scale(0.98);
-            transition: transform 0.22s ease;
-        }
-
-        .tool-modal.active .tool-modal-panel {
-            transform: translateY(0) scale(1);
-        }
-
-        .tool-modal-close {
-            position: absolute;
-            top: 12px;
-            right: 14px;
-            width: 38px;
-            height: 38px;
-            border: 1px solid #555;
-            border-radius: 50%;
-            background: #1d1d1d;
-            color: #fff;
-            font-size: 1.5rem;
-            line-height: 1;
-            cursor: pointer;
-        }
-
-        .tool-modal-close:hover,
-        .tool-modal-close:focus-visible {
-            border-color: var(--primary-red);
-            background: var(--primary-red);
-            outline: none;
-        }
-
-        .tool-modal-head {
-            display: grid;
-            grid-template-columns: 112px 1fr;
-            gap: 20px;
-            align-items: center;
-            padding-right: 38px;
-            margin-bottom: 22px;
-        }
-
-        .tool-modal-head img {
-            width: 112px;
-            height: auto;
-            background: #fff;
-            border: 2px solid var(--primary-red);
-            border-radius: 8px;
-            padding: 8px;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-
-        .tool-modal-head h3 {
-            margin: 0 0 4px;
-            color: var(--primary-red);
-            font-size: 1.7rem;
-            font-family: var(--font-pixel);
-        }
-
-        .tool-modal-count {
-            color: var(--text-muted);
-            font-size: 0.82rem;
-        }
-
-        .tool-modal-section {
-            background: var(--accent-gray);
-            border-left: 4px solid var(--primary-red);
-            border-radius: 6px;
-            padding: 18px;
-            margin-top: 14px;
-        }
-
-        .tool-modal-section h4 {
-            margin: 0 0 10px;
-            color: #fff;
-            font-size: 1rem;
-            font-family: var(--font-pixel);
-        }
-
-        .tool-modal-section p,
-        .tool-modal-section li {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .tool-modal-section ul {
-            padding-left: 20px;
-        }
-
-        .tool-modal-section li + li {
-            margin-top: 7px;
-        }
-
-        .tool-modal-note {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-top: 18px;
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-
-
-        @media (max-width: 520px) {
-            /* スマホではカード背景をカードの形にぴったり合わせる */
-            .item-card {
-                background-size: 100% 100%;
-            }
-
-            /* 道具カード：上3枚・下4枚を画面幅に合わせて均等配置 */
-            .tool-grid {
-                gap: 10px;
-            }
-
-            .tool-row {
-                gap: 8px;
-                width: 100%;
-            }
-
-            .tool-row .item-card {
-                flex: 1 1 0;
-                min-width: 0;
-                padding: 6px;
-            }
-
-            .tool-row .item-card img {
-                width: 100%;
-                height: auto;
-            }
-
-            .tool-row .item-card p {
-                font-size: 0.68rem;
-                margin-top: 2px;
-            }
-
-            /* 役職カードも4枚が画面内に自然に収まるよう調整 */
-            .item-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 10px;
-            }
-
-            .item-grid .item-card {
-                min-width: 0;
-                padding: 7px;
-            }
-
-            .item-grid .item-card img {
-                width: 100%;
-                height: auto;
-            }
-
-            /* 背景がカードからはみ出して見えないようにする */
-            .item-card {
-                overflow: hidden;
-            }
-        }
-
-        @media (max-width: 520px) {
-            .tool-modal-panel {
-                padding: 24px 16px 20px;
-            }
-
-            .tool-modal-head {
-                grid-template-columns: 84px 1fr;
-                gap: 14px;
-            }
-
-            .tool-modal-head img {
-                width: 84px;
-            }
-
-            .tool-modal-head h3 {
-                font-size: 1.35rem;
-            }
-        }
-
-        /* --- 取置き予約フォーム --- */
-        .reserve-box {
-            background-color: var(--accent-gray);
-            border: 2px solid var(--primary-red);
-            padding: 30px 20px;
-            border-radius: 4px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            background-color: #0b0b0b;
-            border: 1px solid #444;
-            color: #fff;
-            font-size: 1rem;
-            border-radius: 4px;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-red);
-        }
-
-        .btn-submit {
-            width: 100%;
-            background-color: var(--primary-red);
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: #8a0014;
-        }
-
-        /* --- フッター --- */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 0.8rem;
-            color: #555;
-            border-top: 1px solid #222;
-        }
-
-        .footer-social {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .footer-social a {
-            color: var(--primary-red);
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .footer-social a:hover {
-            opacity: 0.8;
-        }
-
-
-        @media (max-width: 767px) {
-            body {
-                background-attachment: scroll;
-                background-size: auto 100vh;
-                background-position: top center;
-                background-repeat: repeat-y;
-            }
-        }
-
-        /* --- メディアクエリ（PC向け調整） --- */
-        @media (min-width: 768px) {
-            .nav-links { display: flex; }
-            .hamburger { display: none; }
-            .mobile-menu { display: none; }
-            .hero h1 { font-size: 2rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="fixed-bg" aria-hidden="true"></div>
 
     <!-- ナビゲーションバー -->
     <nav>
@@ -682,7 +20,7 @@
             <li><a href="#reserve">ゲームマーケット予約</a></li>
         </ul>
         <!-- スマホ用ハンバーガーボタン -->
-        <button class="hamburger" id="hamburger-btn">
+        <button class="hamburger" id="hamburger-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="メニュー開閉">
             <span></span>
             <span></span>
             <span></span>
@@ -690,7 +28,7 @@
     </nav>
 
     <!-- スマホ用ドロワーメニュー -->
-    <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
         <ul>
             <li><a href="#about" class="menu-link">概要</a></li>
             <li><a href="#rules" class="menu-link">ルール</a></li>
@@ -702,16 +40,16 @@
     <!-- ヒーローセクション -->
     <header class="hero" id="about">
         <img src="Dot_logo.png" alt="Dot.">
-        <h1>革命前夜の究極の心理戦カードゲーム</h1>
+        <h1>革命前夜が舞台の超本格心理戦カードゲーム</h1>
         <p class="intro-text">
-            『Dot.』は、限られた道具を駆使して相手の正体を探り合う、2〜4人用の本格心理戦ゲームです。確率の推測と大胆なブラフで、相手の裏をかけ！
+            『Dot.』は、限られた道具を駆使して相手の正体を探り合う、超本格心理戦カードゲームです。<br>確率の推測と大胆なブラフで、相手の裏をかけ！
         </p>
-        <a href="#reserve" class="btn-cta">ゲムマ会場で取り置き予約</a>
+        <a href="#reserve" class="btn-cta">予約はこちら</a>
     </header>
 
     <!-- ルール概要セクション -->
     <section id="rules">
-        <h2>Quick Rules</h2>
+        <h2>ルール概要</h2>
         <div class="info-badge-container">
             <div class="info-badge">⏱ 30-90分</div>
             <div class="info-badge">👥 2-4人用</div>
@@ -719,45 +57,42 @@
         </div>
 
         <div class="rule-step">
-            <h3>1. 昼のフェーズ：道具で探る</h3>
-            <p>手札から「道具カード」を1枚出し、効果を発動します。他のプレイヤーの役職や動向をジワジワと炙り出します。</p>
+            <h3>1. 昼のフェーズ：情報収集</h3>
+            <p>手札から「道具カード」を1枚出し、効果を発動。他のプレイヤーの役職や動向を推測しよう。</p>
         </div>
 
         <div class="rule-step">
-            <h3>2. 夜のフェーズ：命懸けの決断</h3>
-            <p>1対1で仕掛ける「決闘」、または全員で一斉に刃を交える「乱闘」を選択。カードの戦力と役職の力で勝敗を決します。</p>
+            <h3>2. 夜のフェーズ：決闘か乱闘か</h3>
+            <p>1対1で仕掛ける「決闘」、それに「対抗」するか「奇襲」するかはあなた次第だ。<br>3人以上なら「乱闘」を仕掛けることも可能だ</p>
         </div>
 
         <div class="rule-step">
             <h3>3. 勝者の確定</h3>
-            <p>心理戦を制し、夜のフェーズで勝利した者がポイントを獲得。先に4ポイントに達したスレイヤーが勝者となります。</p>
+            <p>心理戦を制し、夜のフェーズで勝利した者がポイントを獲得。先に4ポイントに達したプレイヤーが勝者となる。</p>
         </div>
 
         <!-- 道具カード ギャラリー -->
         <div class="subheading">道具カード</div>
         <div class="tool-grid">
-            <div class="tool-row top">
-                <button type="button" class="item-card tool-card" data-tool="red-flag" aria-haspopup="dialog"><img src="Red_Flag.png" alt="赤旗"><p>赤旗</p></button>
-                <button type="button" class="item-card tool-card" data-tool="mask" aria-haspopup="dialog"><img src="Mask.png" alt="仮面"><p>仮面</p></button>
-                <button type="button" class="item-card tool-card" data-tool="cigar" aria-haspopup="dialog"><img src="Cigar.png" alt="葉巻"><p>葉巻</p></button>
-            </div>
-            <div class="tool-row bottom">
-                <button type="button" class="item-card tool-card" data-tool="warrant" aria-haspopup="dialog"><img src="Warrant.png" alt="令状"><p>令状</p></button>
-                <button type="button" class="item-card tool-card" data-tool="crystal-ball" aria-haspopup="dialog"><img src="Crystal_Ball.png" alt="水晶"><p>水晶</p></button>
-                <button type="button" class="item-card tool-card" data-tool="coin" aria-haspopup="dialog"><img src="Coin.png" alt="金貨"><p>金貨</p></button>
-                <button type="button" class="item-card tool-card" data-tool="gun" aria-haspopup="dialog"><img src="Gun.png" alt="拳銃"><p>拳銃</p></button>
-            </div>
+            <button type="button" class="item-card tool-card" data-tool="red-flag" aria-haspopup="dialog"><img src="Red_Flag.png" alt="赤旗"><p>赤旗</p></button>
+            <button type="button" class="item-card tool-card" data-tool="mask" aria-haspopup="dialog"><img src="Mask.png" alt="仮面"><p>仮面</p></button>
+            <button type="button" class="item-card tool-card" data-tool="cigar" aria-haspopup="dialog"><img src="Cigar.png" alt="葉巻"><p>葉巻</p></button>
+            <button type="button" class="item-card tool-card" data-tool="warrant" aria-haspopup="dialog"><img src="Warrant.png" alt="令状"><p>令状</p></button>
+            <button type="button" class="item-card tool-card" data-tool="crystal-ball" aria-haspopup="dialog"><img src="Crystal_Ball.png" alt="水晶"><p>水晶</p></button>
+            <button type="button" class="item-card tool-card" data-tool="coin" aria-haspopup="dialog"><img src="Coin.png" alt="金貨"><p>金貨</p></button>
+            <button type="button" class="item-card tool-card" data-tool="gun" aria-haspopup="dialog"><img src="Gun.png" alt="拳銃"><p>拳銃</p></button>
         </div>
 
         <!-- 役職 ギャラリー -->
         <div class="subheading">役職</div>
         <div class="item-grid">
-            <div class="item-card role-card"><img src="Citizen.png" alt="市民"><p>市民</p></div>
-            <div class="item-card role-card"><img src="Noble.png" alt="貴族"><p>貴族</p></div>
-            <div class="item-card role-card"><img src="Slave.png" alt="奴隷"><p>奴隷</p></div>
-            <div class="item-card role-card"><img src="Jester.png" alt="道化"><p>道化</p></div>
+            <button type="button" class="item-card role-card" data-tool="citizen" aria-haspopup="dialog"><img src="Citizen.png" alt="市民"><p>市民</p></button>
+            <button type="button" class="item-card role-card" data-tool="noble" aria-haspopup="dialog"><img src="Noble.png" alt="貴族"><p>貴族</p></button>
+            <button type="button" class="item-card role-card" data-tool="slave" aria-haspopup="dialog"><img src="Slave.png" alt="奴隷"><p>奴隷</p></button>
+            <button type="button" class="item-card role-card" data-tool="jester" aria-haspopup="dialog"><img src="Jester.png" alt="道化"><p>道化</p></button>
         </div>
     </section>
+
 
 
 
@@ -777,9 +112,11 @@
         </div>
     </div>
 
+    <!-- 役職カードは道具カードと同じモーダル（`tool-modal`）で表示します -->
+
     <!-- 予約セクション -->
     <section id="reserve">
-        <h2>Booth Reservation</h2>
+        <h2>ゲームマーケット2026秋 予約フォーム</h2>
         <div class="reserve-box">
             <!-- Googleフォームへ裏側で送信（画面遷移なし）。回答は元のGoogleフォームの「回答」タブ、
                  またはメール通知設定（回答タブ→⋮→メール通知を受け取る）で確認できます -->
@@ -788,7 +125,7 @@
                   method="POST" target="hidden_iframe">
                 <div class="form-group">
                     <label for="name">お名前（ニックネーム可）</label>
-                    <input type="text" id="name" name="entry.259284481" placeholder="例：ゲムマ太郎" required>
+                    <input type="text" id="name" name="entry.259284481" placeholder="例：ドット太郎" required>
                 </div>
                 <div class="form-group">
                     <label for="email">メールアドレス</label>
@@ -821,7 +158,7 @@
 
     <!-- フッター -->
     <footer>
-        <p>&copy; 2026 Duel of Tactics (Dot.) All Rights Reserved.</p>
+        <p>&copy; 2026 Dot. All Rights Reserved.</p>
         <div class="footer-social">
             <a href="https://twitter.com/Dot_szkcard" target="_blank">𝕏</a>
             <a href="https://instagram.com/dot_szkcard/" target="_blank">Instagram</a>
@@ -836,19 +173,38 @@
         const BG_HEIGHT_FACTOR = 1.6; // 大きいほど背景がゆっくり動く（1に近いほど通常スクロールに近づく）
 
         function updateBackgroundScroll() {
-            // スマホでは固定背景＋パララックスによる引き伸ばしを避ける
+            // スマホでは背景を固定表示し、スクロールで動かないようにする
             if (window.innerWidth < 768) {
-                document.body.style.backgroundSize = '';
-                document.body.style.backgroundPositionY = '';
+                document.body.style.backgroundAttachment = 'fixed';
+                document.body.style.backgroundSize = '100% auto';
+                document.body.style.backgroundPositionY = '0px';
                 return;
             }
 
+            const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            const bgHeight = viewportHeight * BG_HEIGHT_FACTOR;
+
+            // 背景画像の実寸（naturalWidth/naturalHeight）を取得して
+            // ビューポート幅に合わせた描画高さを算出する
+            if (!window._bgNatural) {
+                const img = new Image();
+                img.src = 'bg.png';
+                img.onload = function() {
+                    window._bgNatural = { w: img.naturalWidth, h: img.naturalHeight };
+                    updateBackgroundScroll();
+                };
+                // 読み込み前は幅いっぱいで表示
+                document.body.style.backgroundSize = '100% auto';
+                return;
+            }
+
+            const natural = window._bgNatural;
+            const bgHeight = Math.round(viewportWidth * natural.h / natural.w);
+            // 幅100%にして高さは画像縦横比に合わせる
             document.body.style.backgroundSize = '100% ' + bgHeight + 'px';
 
             const scrollableHeight = document.documentElement.scrollHeight - viewportHeight;
-            const maxBgOffset = bgHeight - viewportHeight;
+            const maxBgOffset = Math.max(bgHeight - viewportHeight, 0);
 
             if (scrollableHeight <= 0 || maxBgOffset <= 0) {
                 document.body.style.backgroundPositionY = '0px';
@@ -868,10 +224,12 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const menuLinks = document.querySelectorAll('.menu-link');
 
-        // メニューの開閉を切り替える関数
+        // メニューの開閉を切り替える関数（ARIA状態も更新）
         function toggleMenu() {
-            hamburgerBtn.classList.toggle('active');
+            const isActive = hamburgerBtn.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburgerBtn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            mobileMenu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
         }
 
         // ハンバーガーボタンクリック時
@@ -881,6 +239,10 @@
         menuLinks.forEach(link => {
             link.addEventListener('click', toggleMenu);
         });
+
+        // 初期ARIA状態を確実に設定
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
 
 
 
@@ -892,7 +254,7 @@
         const toolModalImage = document.getElementById('tool-modal-image');
         const toolModalCount = document.getElementById('tool-modal-count');
         const toolModalContent = document.getElementById('tool-modal-content');
-        const toolCards = document.querySelectorAll('.tool-card');
+        const toolCards = document.querySelectorAll('.tool-card, .role-card');
         let lastFocusedToolCard = null;
 
         const toolDetails = {
@@ -949,6 +311,23 @@
                 html: `<div class="tool-modal-section"><h4>効果</h4><p>このラウンドの夜フェーズで以下の効果を得る。</p>
                 <ul><li>決闘で勝利した場合、獲得ポイントが+2ptから+3ptになる。</li></ul></div>`
             }
+            ,
+            'citizen': {
+                name: '市民', image: 'Citizen.png', count: '役職カード',
+                html: `<div class="tool-modal-section"><h4>役職：市民</h4><p>赤旗の戦力が10になる。</p></div>`
+            },
+            'noble': {
+                name: '貴族', image: 'Noble.png', count: '役職カード',
+                html: `<div class="tool-modal-section"><h4>役職：貴族</h4><p>戦力+2</p></div>`
+            },
+            'slave': {
+                name: '奴隷', image: 'Slave.png', count: '役職カード',
+                html: `<div class="tool-modal-section"><h4>役職：奴隷</h4><p>基本は戦力-2。相手が貴族のときは戦力×2</p></div>`
+            },
+            'jester': {
+                name: '道化', image: 'Jester.png', count: '役職カード',
+                html: `<div class="tool-modal-section"><h4>役職：道化</h4><p>自分が受け手の場合、勝者が逆転する。</p></div>`
+            }
         };
 
         function openToolModal(toolKey, trigger) {
@@ -993,6 +372,8 @@
             }
         });
 
+        
+
         // --- 予約フォーム送信処理（裏側でGoogleフォームに送信） ---
         const reserveForm = document.getElementById('reserve-form');
         const reserveBtn = document.getElementById('reserve-submit-btn');
@@ -1029,7 +410,7 @@
 
             reserveStatus.style.display = 'block';
             reserveStatus.style.color = '#7CFC7C';
-            reserveStatus.textContent = 'ご予約ありがとうございます！確認のご連絡をお待ちください。';
+            reserveStatus.textContent = 'ご予約ありがとうございます！確認のメールをお送りしました。';
             reserveForm.reset();
             reserveBtn.disabled = false;
             reserveBtn.textContent = '予約を確定する';
