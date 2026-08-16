@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dot. Official Website</title>
+    <title>Dot. - Official Website</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,6 +29,7 @@
 
     <!-- スマホ用ドロワーメニュー -->
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <button id="mobile-menu-close" class="mobile-close" aria-label="メニューを閉じる">×</button>
         <ul>
             <li><a href="#about" class="menu-link">概要</a></li>
             <li><a href="#rules" class="menu-link">ルール</a></li>
@@ -239,6 +240,15 @@
         menuLinks.forEach(link => {
             link.addEventListener('click', toggleMenu);
         });
+
+        // モバイルメニューの閉じるボタン
+        const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+        if (mobileMenuCloseBtn) {
+            mobileMenuCloseBtn.addEventListener('click', () => {
+                // もしメニューが開いていれば閉じる
+                if (mobileMenu.classList.contains('active')) toggleMenu();
+            });
+        }
 
         // 初期ARIA状態を確実に設定
         hamburgerBtn.setAttribute('aria-expanded', 'false');
