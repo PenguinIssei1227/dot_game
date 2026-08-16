@@ -295,7 +295,7 @@
         }
 
         .item-card {
-            background-color: #ffffff;
+            background-image: url('Dot_card_bg.png');
             border: 2px solid var(--primary-red);
             border-radius: 6px;
             padding: 10px;
@@ -329,6 +329,28 @@
             -webkit-appearance: none;
             font: inherit;
             cursor: pointer;
+
+            /* 添付カード画像から切り出した背景テクスチャを使用 */
+            background-color: #efd09a;
+            background-image: url('Dot_card_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* 道具カード・役職カードの絵は背景テクスチャの上にそのまま表示 */
+        .tool-card img,
+        .role-card img {
+            background: transparent;
+        }
+
+        /* 役職カードにも道具カードと同じ紙背景を使用 */
+        .role-card {
+            background-color: #efd09a;
+            background-image: url('Dot_card_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .tool-card:focus-visible {
@@ -665,10 +687,10 @@
         <!-- 役職 ギャラリー -->
         <div class="subheading">役職</div>
         <div class="item-grid">
-            <div class="item-card"><img src="Citizen.png" alt="市民"><p>市民</p></div>
-            <div class="item-card"><img src="Noble.png" alt="貴族"><p>貴族</p></div>
-            <div class="item-card"><img src="Slave.png" alt="奴隷"><p>奴隷</p></div>
-            <div class="item-card"><img src="Jester.png" alt="道化"><p>道化</p></div>
+            <div class="item-card role-card"><img src="Citizen.png" alt="市民"><p>市民</p></div>
+            <div class="item-card role-card"><img src="Noble.png" alt="貴族"><p>貴族</p></div>
+            <div class="item-card role-card"><img src="Slave.png" alt="奴隷"><p>奴隷</p></div>
+            <div class="item-card role-card"><img src="Jester.png" alt="道化"><p>道化</p></div>
         </div>
     </section>
 
@@ -830,120 +852,28 @@
                 `
             },
             'mask': {
-                name: '仮面', image: 'Mask.png', count: '道具カード｜収録枚数：3枚',
-                html: `
-                    <div class="tool-modal-section">
-                        <h4>効果</h4>
-                        <p>好きなプレイヤーを1人選び、役職カードを交換する。</p>
-                        <p>※自分の役職がわからなくなることもある。</p>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>使用上の注意</h4>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>戦術メモ</h4>
-                        <p></p>
-                    </div>
-                `
+                name: '仮面', image: 'Mask.png', count: '道具カード',
+                html: `<div class="tool-modal-section"><h4>効果</h4><p>このカードの効果詳細はまだ設定されていません。</p></div>`
             },
             'cigar': {
-                name: '葉巻', image: 'Cigar.png', count: '道具カード｜収録枚数：3枚',
-                html: `<div class="tool-modal-section"><h4>効果</h4>
-                <p>酒場の役職カードのうち好きな1枚と自分の役職カードを交換する。</p>
-                <p>新たな自分の役職カードの上に証明チップをのせる。</p></div>
-                <div class="tool-modal-section">
-                        <h4>使用上の注意</h4>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>戦術メモ</h4>
-                        <p></p>
-                    </div>
-                `
+                name: '葉巻', image: 'Cigar.png', count: '道具カード',
+                html: `<div class="tool-modal-section"><h4>効果</h4><p>このカードの効果詳細はまだ設定されていません。</p></div>`
             },
             'warrant': {
-                name: '令状', image: 'Warrant.png', count: '道具カード｜収録枚数：3枚',
-                html: `<div class="tool-modal-section"><h4>効果</h4><p>他のプレイヤーは手番が早い順に、手札にない道具を宣言し、記録カードのその道具の欄に証明チップをのせる。。</p>
-                <p>自分の証明チップや枯渇チップがすでにのっている道具は宣言できない。</p></div>
-                <div class="tool-modal-section">
-                        <h4>使用上の注意</h4>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>戦術メモ</h4>
-                        <p></p>
-                    </div>
-                `
+                name: '令状', image: 'Warrant.png', count: '道具カード',
+                html: `<div class="tool-modal-section"><h4>効果</h4><p>このカードの効果詳細はまだ設定されていません。</p></div>`
             },
             'crystal-ball': {
-                name: '水晶', image: 'Crystal_Ball.png', count: '道具カード｜収録枚数：2枚',
-                html: `<div class="tool-modal-section"><h4>効果</h4><p>酒場の役職カードのうち好きな1枚の表を見て、戻す。</p>
-                <p>その後その上に証明チップをのせる。</div>
-                <div class="tool-modal-section">
-                        <h4>使用上の注意</h4>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>戦術メモ</h4>
-                        <p></p>
-                    </div>
-                `
+                name: '水晶', image: 'Crystal_Ball.png', count: '道具カード',
+                html: `<div class="tool-modal-section"><h4>効果</h4><p>このカードの効果詳細はまだ設定されていません。</p></div>`
             },
             'coin': {
-                name: '金貨', image: 'Coin.png', count: '道具カード｜収録枚数：2枚',
-                html: `<div class="tool-modal-section"><h4>効果</h4><p>手札から1枚選んで自分の前に裏向きで伏せ、証明チップをのせる。</p>
-                <p>その後新たに山札から1枚引き、手札に加える。</p>
-                <p>記録カードにのせた自分の証明チップはすべて回収する。</p></div>
-                <div class="tool-modal-section">
-                        <h4>使用上の注意</h4>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>戦術メモ</h4>
-                        <p></p>
-                    </div>
-                `
+                name: '金貨', image: 'Coin.png', count: '道具カード',
+                html: `<div class="tool-modal-section"><h4>効果</h4><p>このカードの効果詳細はまだ設定されていません。</p></div>`
             },
             'gun': {
-                name: '拳銃', image: 'Gun.png', count: '道具カード｜収録枚数：1枚',
-                html: `<div class="tool-modal-section"><h4>効果</h4><p>このラウンドの夜フェーズで以下の効果を得る。</p>
-                <ul>
-                    <li>決闘で勝利した場合、獲得ポイントが+2ptから+3ptになる。</li>
-                </ul></div>
-                <div class="tool-modal-section">
-                        <h4>使用上の注意</h4>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="tool-modal-section">
-                        <h4>戦術メモ</h4>
-                        <p></p>
-                    </div>
-                `
+                name: '拳銃', image: 'Gun.png', count: '道具カード',
+                html: `<div class="tool-modal-section"><h4>効果</h4><p>このカードの効果詳細はまだ設定されていません。</p></div>`
             }
         };
 
